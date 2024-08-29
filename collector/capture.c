@@ -126,10 +126,6 @@ int main() {
             default:
                 continue;
         }
-        //if (et != ETHERTYPE_IP && et != ETHERTYPE_IPV6)
-        //    continue;
-        //if et ==
-        //unsigned short len = ntohs(*(unsigned short *)(packet + 16));
         char filename[65];
         filename[64] = 0;
         for (int i = 0; i < 64; ++i)
