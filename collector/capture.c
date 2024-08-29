@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.o-or-later
 
-#include "net/ethernet.h"
 #include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
