@@ -22,6 +22,7 @@ typedef struct ether_header ether_header_t;
 static char pcapeb[PCAP_ERRBUF_SIZE];
 static const char charset[] = "abcdefghijklmnopqrstuvwxyzABCEDFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+const unsigned char IPNPROTO_UDP = 0x11;
 const unsigned char IP6_ICMPV6 = 0x3a;
 const unsigned char ICMPV6_RS = 133;
 const unsigned char ICMPV6_NA = 136;
@@ -33,6 +34,12 @@ const unsigned char ICMPV6_NA = 136;
            exit(1);                                    \
         }                                              \
     } while (0)
+
+// Assumes packet is defined
+// PDB probably isn't necessary, should be able to index directly,
+// but it does make things look cleaner/more consistent with pds
+#define pdb(off) (*(unsigned char *)(packet + off))
+#define pds(off) (*(unsigned short *)(packet + off))
 
 const char *CAPTURES_DIR = "./captures";
 
@@ -112,19 +119,24 @@ int main() {
         unsigned short len;
         switch (ntohs(eptr->ether_type)) {
             case ETHERTYPE_IP:
-                len = ntohs(*(unsigned short *)(packet + 16));
+                len = ntohs(pds(16));
+                // skip corosync from Proxmox nodes - drop node-node UDP
+                if (pdb(26) == 0x1 && pdb(30) == 0x1 && pdb(23) == IPNPROTO_UDP)
+                    continue;
                 break;
             case ETHERTYPE_IPV6:
                 unsigned char icmpv6t;
-                if (*(unsigned char *)(packet + 20) == IP6_ICMPV6
-                    && ((icmpv6t = *(unsigned char *)(packet + 54)) >= ICMPV6_RS
+                if (pds(20) == IP6_ICMPV6
+                    && ((icmpv6t = pdb(54)) >= ICMPV6_RS
                         || icmpv6t <= ICMPV6_NA)) {
                     continue;
                 }
-                len = ntohs(*(unsigned short *)(packet + 18));
+                len = ntohs(pds(18));
             default:
                 continue;
         }
+        // Reduce "bad data", take only 1280 - less processing in stage 2
+
         char filename[65];
         filename[64] = 0;
         for (int i = 0; i < 64; ++i)
