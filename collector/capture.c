@@ -123,6 +123,7 @@ int main() {
                 // skip corosync from Proxmox nodes - drop node-node UDP
                 if (pdb(27) == 0x1 && pdb(31) == 0x1 && pdb(23) == IPNPROTO_UDP)
                     continue;
+                // NOTE: packets between sappho and violet will be duplicated
                 break;
             case ETHERTYPE_IPV6:
                 unsigned char icmpv6t;
