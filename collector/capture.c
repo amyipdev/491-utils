@@ -121,7 +121,7 @@ int main() {
             case ETHERTYPE_IP:
                 len = ntohs(pds(16));
                 // skip corosync from Proxmox nodes - drop node-node UDP
-                if (pdb(26) == 0x1 && pdb(30) == 0x1 && pdb(23) == IPNPROTO_UDP)
+                if (pdb(27) == 0x1 && pdb(31) == 0x1 && pdb(23) == IPNPROTO_UDP)
                     continue;
                 break;
             case ETHERTYPE_IPV6:
@@ -136,7 +136,9 @@ int main() {
                 continue;
         }
         // Reduce "bad data", take only 1280 - less processing in stage 2
-
+        // This also addresses pooling at size=1500
+        if (len > 1280)
+            continue;
         char filename[65];
         filename[64] = 0;
         for (int i = 0; i < 64; ++i)
