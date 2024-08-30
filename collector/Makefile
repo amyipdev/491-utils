@@ -8,7 +8,7 @@ LIBS += $(shell pkg-config --libs libcap libpcap)
 all: capture.run
 
 capture.run: capture.c
-	$(CC) -o capture.run $(CFLAGS) $(INCLUDES) $(LIBS) capture.c
+	$(CC) -o capture.run $(CFLAGS) $(INCLUDES) capture.c $(LIBS)
 
 run: capture.run
 	./capture.run
