@@ -1,0 +1,9 @@
+[package]
+name = "cpsc491-acc-translator"
+authors = ["Amy Parker <amy@amyip.net>"]
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+libacc = "0.1.0"
+rand = "0.8.5"

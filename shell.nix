@@ -8,5 +8,10 @@ with pkgs; mkShell {
     pkg-config
     gnumake
     jq
-  ];
+    python312
+    cargo
+  ] ++ (with python312Packages; [
+    numpy
+    scikit-learn
+  ]);
 }
