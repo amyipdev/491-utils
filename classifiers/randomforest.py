@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import RandomForestClassifier
 import universal
 import sys
 
@@ -10,9 +10,7 @@ if len(sys.argv) >= 2 and sys.argv[1] == "ta":
 else:
     X_train, X_test, Y_train, Y_test = universal.sklearn()
 
-clf = MLPClassifier(hidden_layer_sizes=(950,950,950),
-                    verbose=True,
-                    max_iter=300,
-                    tol=0.000000001).fit(X_train, Y_train)
+clf = RandomForestClassifier(n_estimators=128,
+                             n_jobs=-1).fit(X_train, Y_train)
 
 universal.conclude_skl(clf, X_test, Y_test)

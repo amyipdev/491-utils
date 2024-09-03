@@ -47,3 +47,15 @@ def sklearn() -> (np.array, np.array, np.array, np.array):
 def sklearn_ta() -> (np.array, np.array, np.array, np.array):
     X, Y = uni_ta()
     return train_test_split(X, Y, shuffle=True)
+
+def conclude_skl(model, X_test, Y_test):
+    tp, fp, fn, tn = 0,0,0,0
+    preds = model.predict(X_test)
+    for i, a in enumerate(preds):
+        if Y_test[i] == 1:
+            if a == 1: tp += 1
+            else: fn += 1
+        else:
+            if a == 1: fp += 1
+            else: tn += 1
+    print(f"TP={tp},FP={fp},TN={tn},FN={fn}")
