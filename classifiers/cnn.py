@@ -6,12 +6,8 @@ from keras import losses, layers, models, metrics
 import universal
 import sys
 
-if len(sys.argv) >= 2 and sys.argv[1] == "ta":
-    X_train, X_test, Y_train, Y_test = universal.tensorflow_ta()
-    input_shape = (150000,1)
-else:
-    X_train, X_test, Y_train, Y_test = universal.tensorflow()
-    input_shape = (1500,1)
+X_train, X_test, Y_train, Y_test = universal.tensorflow()
+input_shape = (1500,1)
 
 clf = models.Sequential()
 clf.add(layers.Conv1D(1500, 32, activation="relu", input_shape=input_shape))

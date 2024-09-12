@@ -55,13 +55,6 @@ def tensorflow() -> (np.array, np.array, np.array, np.array):
             np.array(Ya[..., None]),
             np.array(Yb[..., None]))
 
-def tensorflow_ta() -> (np.array, np.array, np.array, np.array):
-    Xa, Xb, Ya, Yb = sklearn_ta()
-    return (np.array(Xa[..., None]),
-            np.array(Xb[..., None]),
-            np.array(Ya[..., None]),
-            np.array(Yb[..., None]))
-
 def conclude_skl(model, X_test, Y_test):
     tp, fp, fn, tn = 0,0,0,0
     preds = model.predict(X_test)
