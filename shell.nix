@@ -8,10 +8,21 @@ with pkgs; mkShell {
     pkg-config
     gnumake
     jq
-    python312
+    python311
     cargo
-  ] ++ (with python312Packages; [
+    zlib
+    which
+    libzip
+    openssl
+    libxml2
+    libxslt
+    gdb
+  ] ++ (with python311Packages; [
     numpy
     scikit-learn
+    tensorflow-bin
+    (keras.override {
+        tensorflow = tensorflow-bin;
+    })
   ]);
 }

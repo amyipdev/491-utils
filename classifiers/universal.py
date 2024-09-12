@@ -48,6 +48,20 @@ def sklearn_ta() -> (np.array, np.array, np.array, np.array):
     X, Y = uni_ta()
     return train_test_split(X, Y, shuffle=True)
 
+def tensorflow() -> (np.array, np.array, np.array, np.array):
+    Xa, Xb, Ya, Yb = sklearn()
+    return (np.array(Xa[..., None]),
+            np.array(Xb[..., None]),
+            np.array(Ya[..., None]),
+            np.array(Yb[..., None]))
+
+def tensorflow_ta() -> (np.array, np.array, np.array, np.array):
+    Xa, Xb, Ya, Yb = sklearn_ta()
+    return (np.array(Xa[..., None]),
+            np.array(Xb[..., None]),
+            np.array(Ya[..., None]),
+            np.array(Yb[..., None]))
+
 def conclude_skl(model, X_test, Y_test):
     tp, fp, fn, tn = 0,0,0,0
     preds = model.predict(X_test)
@@ -58,4 +72,19 @@ def conclude_skl(model, X_test, Y_test):
         else:
             if a == 1: fp += 1
             else: tn += 1
+    # TODO: loss
     print(f"TP={tp},FP={fp},TN={tn},FN={fn}")
+    print(f"Accuracy={(tp+tn)/(tp+tn+fp+fn)}")
+    print(f"Precision={tp/(tp+fp)}")
+    print(f"Recall={tp/(tp+fn)}")
+    print(f"F1={2*tp/(2*tp+fp+fn)}")
+    print(f"CollateralDamage={fp/(fp+tn)}")
+
+def conclude_tensorflow(model, X_test, Y_test):
+    res = model.evaluate(X_test, Y_test)
+    print(f"Loss={res[0]}")
+    print(f"Accuracy={res[1]}")
+    print(f"Precision={res[2]}")
+    print(f"Recall={res[3]}")
+    print(f"F1={res[4]}")
+    print(f"CollateralDamage={((1-res[2])*res[3])/((1-res[2])*res[3]+(1-res[3])*res[2])}")
