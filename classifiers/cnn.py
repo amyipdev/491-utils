@@ -4,7 +4,6 @@
 import tensorflow as tf
 from keras import losses, layers, models, metrics
 import universal
-import sys
 
 X_train, X_test, Y_train, Y_test = universal.tensorflow()
 input_shape = (1500,1)
