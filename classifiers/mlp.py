@@ -12,7 +12,7 @@ else:
 
 clf = MLPClassifier(hidden_layer_sizes=(950,950,950),
                     verbose=True,
-                    max_iter=300,
+                    max_iter=100,
                     tol=0.000000001).fit(X_train, Y_train)
 
 universal.conclude_skl(clf, X_test, Y_test)

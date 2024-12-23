@@ -3,19 +3,42 @@
 
 import numpy as np
 import os
+import random
 from sklearn.model_selection import train_test_split
+import time
 
 def uniload() -> (list[bytes], list[bytes]):
     X = []
     Y = []
     for p in os.listdir("../translator/postacc/"):
+        if random.randint(1,3) != 1:
+            continue
         with open("../translator/postacc/" + p, "rb") as f:
             X.append(f.read())
             Y.append(1)
-    for p in os.listdir("./randoms"):
-        with open("./randoms/" + p, "rb") as f:
-            X.append(f.read())
+    for p in os.listdir("../collector/captures"):
+        if random.randint(1,3) != 1:
+            continue
+        with open("../collector/captures/" + p, "rb") as f:
+            z = f.read()
+            jump = 0
+            if z[0] & 0xf0 == 0x40:
+                jump += 20
+                nh = z[9]
+                if nh == 0x6:
+                    jump += 20
+                elif nh == 0x11:
+                    jump += 8
+            elif z[0] & 0xf0 == 0x60:
+                jump += 40
+                nh = z[6]
+                if nh == 0x6:
+                    jump += 20
+                elif nh == 0x11:
+                    jump += 8
+            X.append(f.read()[jump:])
             Y.append(0)
+    print(len(X))
     return (X, Y)
 
 def uni() -> (list[bytes], list[bytes]):

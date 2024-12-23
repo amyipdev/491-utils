@@ -21,5 +21,5 @@ clf.compile(optimizer="adam",
                      'recall',
                      metrics.F1Score])
 clf.summary()
-clf.fit(X_train, Y_train, epochs=500, validation_data=(X_test, Y_test))
+clf.fit(X_train, Y_train, epochs=1, validation_data=(X_test, Y_test))
 universal.conclude_tensorflow(clf, X_test, Y_test)
